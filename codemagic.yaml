@@ -1,0 +1,23 @@
+# 这是最小配置，保证只构建你需要的
+workflows:
+  default-workflow:
+    name: Default Workflow
+    instance_type: mac_mini_m2  # 强制使用Mac M2
+    # 环境配置
+    environment:
+      flutter: stable
+      xcode: latest
+    # 构建脚本
+    scripts:
+      - name: Get packages
+        script: flutter pub get
+      # Android 构建
+      - name: Build Android
+        script: flutter build apk --release
+      # iOS 构建（不加--no-codesign，必须选自动签名）
+      - name: Build iOS
+        script: flutter build ipa --release
+    # 产物
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
+      - build/ios/ipa/**.ipa
